@@ -7,4 +7,4 @@ The crate diagonalizes Hamiltonians on finite quantum spin chains with general S
 - are time-reversal invariant.
 - are reflection invariant.
 - are translation invariant.
-See the examples folder for calculation of the ground state energies and spectral gaps of the S=1 antiferromagnetic Heisenberg chain and the Affleck-Kennedy-Lieb-Tasaki chain.
+See the ``examples`` folder for calculation of the ground state energies and spectral gaps of the S=1 antiferromagnetic Heisenberg chain and the Affleck-Kennedy-Lieb-Tasaki chain.
