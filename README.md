@@ -1,7 +1,7 @@
 # Quantum Spin Chains
 This crate is created by Emil Aagaard in 2024 as a part their Master's thesis "Quantum Spin Chains: Haldane's Conjecture and Symmetry-Protected Topological Phases".
 
-The crate diagonalizes Hamiltonians on finite quantum spin chains with general <img src="https://latex.codecogs.com/svg.image?%5Cinline%20%5Csmall%20%7B%5Ccolor%7BWhite%7DS%5Cin%5Cmathbb%20N%5Cslash2%7D"/> using power iteration. To decrease the dimensionality of the problem, it only considers the subspace of eigenvectors that
+The crate diagonalizes Hamiltonians on finite quantum spin chains with general <img src="https://latex.codecogs.com/pdf.image?\inline&space;\small&space;\dpi{110}{\color{White}S\in\mathbb&space;N\slash2}" title="{\color{White}S\in\mathbb N\slash2}" /> using power iteration. To decrease the dimensionality of the problem, it only considers the subspace of eigenvectors that
 - have real coefficients in the natural basis (i.e., the basis that such that <img src="https://latex.codecogs.com/svg.image?\bg{white}\hat&space;S_n^z\vert\dots\sigma_n\dots\rangle=\sigma_n\vert\dots\sigma_n\dots\rangle"/>).
 - are eigenvectors of <img src="https://latex.codecogs.com/svg.image?\bg{white}\hat&space;S_{\text{total}}^z"/>.
 - are time-reversal invariant.
