@@ -1,3 +1,7 @@
+//! This module contains the functions used to handle 
+//! time-reversal symmetry, reflecion symmetry and 
+//! translation symmetry.
+/// Calculates the symmetry factors.
 pub fn get_symmetry_factors(
     symmetry_signs: &Vec<Vec<[bool; 3]>>,
     time_reversal_eigenvalue: bool,
@@ -23,6 +27,9 @@ pub fn get_symmetry_factors(
     symmetry_factors
 }
 
+/// Finds all the basis states that are equivalent 
+/// under the three symmetries, and gets the 
+/// corresponding symmetry signs.
 pub fn get_eq_class(
     digits: Vec<u8>,
     base: u8,
@@ -50,6 +57,7 @@ pub fn get_eq_class(
     eq_class
 }
 
+/// Time-reverses and reflects a basis state.
 fn time_reverse_reflect_digits(
     digits: Vec<u8>,
     base: u8,
@@ -66,6 +74,7 @@ fn time_reverse_reflect_digits(
     ]
 }
 
+/// Time-reverses a basis state.
 fn time_reverse_digits(
     digits: Vec<u8>,
     base: u8,
@@ -80,6 +89,7 @@ fn time_reverse_digits(
     [digits, time_reversed_digits]
 }
 
+/// Reflects a basis state.
 fn reflect_digits(
     digits: Vec<u8>,
 ) -> [Vec<u8>; 2] {
@@ -89,6 +99,7 @@ fn reflect_digits(
     [digits, revflected_digits]
 }
 
+/// Finds the translations of a basis state.
 fn get_translations(
     digits: Vec<u8>,
     length: u8,
@@ -108,6 +119,7 @@ fn get_translations(
     translations
 }
 
+/// Translates a basis state.
 fn get_translation(
     digits: &Vec<u8>,
     translate: u8,

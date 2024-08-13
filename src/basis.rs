@@ -1,13 +1,20 @@
+//! This module contains the [`BasisStates`] struct,
+//! which is a symmetrized version of the natural basis.
 use crate::symmetries::get_eq_class;
 
+/// A representer of an equivalence class of basis states.
 #[derive(PartialEq, Debug)]
 pub struct Representer {
+    /// The numeric value of the basis state.
     pub value: usize,
+    /// The digits of the basis state.
     pub digits: Vec<u8>,
+    /// The sigmas corresponding to the digits of the basis state.
     pub sigmas: Vec<f32>,
 }
 
 impl Representer {
+    /// Creates a [`Representer`].
     fn new(value: usize, digits: &Vec<u8>, spin: f32) -> Self {
         let mut digits = digits.clone();
         digits.push(digits[0]);
@@ -24,15 +31,22 @@ impl Representer {
     }
 }
 
+/// All basis states arranged into equivalence classes 
+/// (symmetrized basis states).
 #[derive(PartialEq, Debug)]
 pub struct BasisStates {
+    /// Number of equivalence classes.
     pub length: usize,
+    /// Representers of the equivalence classes.
     pub representers: Vec<Representer>,
+    /// [`BasisStates::representers`] arranged by their [`Representer::value`].
     pub representer_map: Vec<usize>,
+    /// Symmetry signs of the equivalence classes.
     pub symmetry_signs: Vec<Vec<[bool; 3]>>,
 }
 
 impl BasisStates {
+    /// Creates a [`BasisStates`].
     pub fn new(
         base: u8,
         spin: f32,
@@ -86,6 +100,7 @@ impl BasisStates {
     }
 }
 
+/// Converts an integer into its digits.
 pub fn get_digits(
     value: usize,
     base: u8,

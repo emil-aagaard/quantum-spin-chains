@@ -1,7 +1,12 @@
+//! This module contains the [`Model`] struct,
+//! which holds the symmetrized basis states 
+//! and holds the power iteration algorithm.
 use crate::basis::BasisStates;
 use crate::states::State;
 use crate::hamiltonians::{Hamiltonian, Implemented};
 
+/// Represents everything about the system except 
+/// the Hamiltonian.
 pub struct Model {
     pub base: u8,
     pub spin: f32,
@@ -15,6 +20,7 @@ pub struct Model {
 }
 
 impl Model {
+    /// Creates a new [`Model`].
     pub fn new(
         base: u8,
         length: u8,
@@ -46,6 +52,7 @@ impl Model {
         }
     }
 
+    /// Executes the power iteration.
     fn power_iterate<T>(
         &self,
         hamiltonian: &Hamiltonian<T>,
@@ -57,7 +64,7 @@ impl Model {
         let mut state_1 = State::from_zeros(self.basis_states.length);
         let max_eigenenergy = hamiltonian.get_max_eigenenergy(&self);
 
-        for _ in 0..iterations {
+        for _ in 0..iterations/2 {
             hamiltonian.apply(&state_0, &mut state_1, &self, symmetry_factors);
             state_1 -= &state_0 * max_eigenenergy;
 
@@ -81,6 +88,8 @@ impl Model {
         state_0
     }
 
+    /// Finds the eigenvector of the Hamtilonian with 
+    /// the smallest eigenvalue.
     pub fn find_eigenstate<T>(
         &mut self,
         hamiltonian: &Hamiltonian<T>,
@@ -97,6 +106,7 @@ impl Model {
     }
 }
 
+/// Calculates powers of the base.
 pub fn get_base_powers(base: u8, length: u8) -> Vec<usize> {
     (0..=length)
         .map(
@@ -105,6 +115,8 @@ pub fn get_base_powers(base: u8, length: u8) -> Vec<usize> {
         .collect()
 }
 
+/// Calculates the integers, which mimics the 
+/// action of S^+_n S^-_{n+1}.
 pub fn get_flippers(base_powers: &Vec<usize>) -> Vec<isize> {
     (0..base_powers.len() - 1)
         .map(
@@ -113,6 +125,7 @@ pub fn get_flippers(base_powers: &Vec<usize>) -> Vec<isize> {
         .collect()
 }
 
+/// Calculates the coefficent related to S^-.
 fn get_m_coefficients(base: u8, spin: f32) -> Vec<f32> {
     (0..base)
         .map(|index|
@@ -122,6 +135,7 @@ fn get_m_coefficients(base: u8, spin: f32) -> Vec<f32> {
         .collect()
 }
 
+/// Calculates the coefficent related to S^+.
 fn get_p_coefficients(base: u8, spin: f32) -> Vec<f32> {
     (0..base)
         .map(|index|

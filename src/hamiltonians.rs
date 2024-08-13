@@ -1,17 +1,12 @@
+//! This module contains the objects needed to define 
+//! a Hamiltonian. The Hamiltonians [`AFH`] and 
+//! [`AKLT`] are already implemented.
 use crate::states::State;
 use crate::model::Model;
 
-pub struct AFH {
-    pub s: f32,
-    one_minus_s: f32,
-}
-
-pub struct AKLT {
-    pub s: f32,
-    one_minus_s: f32,
-}
-
+/// Defines the functionalities of a [`Hamiltonian`].
 pub trait Implemented {
+    /// Applying an operator.
     fn apply(
         &self,
         input_state: &State,
@@ -19,14 +14,34 @@ pub trait Implemented {
         model: &Model,
         symmetry_factors: &Vec<f32>,
     );
+    /// Gets the largest eigenvalue of an operator.
     fn get_max_eigenenergy(&self, model: &Model) -> f32;
 }
 
+/// Represents a Hamiltonian operator.
 pub struct Hamiltonian<T> {
+    /// The parameters of the Hamiltonian.
     pub parameters: T,
 }
 
+/// Holds the parameters a the AFH Hamiltonian.
+pub struct AFH {
+    /// s*H_AFH + (1-s)*H_triv.
+    pub s: f32,
+    /// 1-s.
+    one_minus_s: f32,
+}
+
+/// Holds the parameters a the AKLT Hamiltonian.
+pub struct AKLT {
+    /// s*H_AKLT + (1-s)*H_triv.
+    pub s: f32,
+    /// 1-s.
+    one_minus_s: f32,
+}
+
 impl Hamiltonian<AFH> {
+    /// Creates the AFH Hamiltonian.
     pub fn new(s: f32) -> Self {
         let one_minus_s = 1.0 - s;
 
@@ -37,6 +52,7 @@ impl Hamiltonian<AFH> {
 }
 
 impl Hamiltonian<AKLT> {
+    /// Creates the AKLT Hamiltonian.
     pub fn new(s: f32) -> Self {
         let one_minus_s = 1.0 - s;
 
@@ -47,6 +63,7 @@ impl Hamiltonian<AKLT> {
 }
 
 impl Implemented for Hamiltonian<AFH> {
+    /// Applies the AFH Hamiltonian.
     fn apply(
         &self,
         input_state: &State,
@@ -113,6 +130,7 @@ impl Implemented for Hamiltonian<AFH> {
 }
 
 impl Implemented for Hamiltonian<AKLT> {
+    /// Applies the AKLT Hamiltonian.
     fn apply(
         &self,
         input_state: &State,
@@ -173,54 +191,55 @@ impl Implemented for Hamiltonian<AKLT> {
     }
 }
 
+/// Projects onto the subspace with S=2.
 fn project_2(
     digit: u8,
     next_digit: u8,
     flipper: isize,
 ) -> [(bool, isize, f32); 3] {
     match (digit, next_digit) {
-        (0, 0) => [  // |00⟩
-            (false, 0, 1.0), // 1*|00⟩
+        (0, 0) => [  // |--⟩
+            (false, 0, 1.0), // 1*|--⟩
             (false, 0, 0.0),
             (false, 0, 0.0)
         ],
-        (1, 0) => [ // |10⟩
-            (false, 0, 0.5), // 1/2*|10⟩
-            (false, flipper, 0.5), // 1/2*|01⟩
+        (1, 0) => [ // |0-⟩
+            (false, 0, 0.5), // 1/2*|0-⟩
+            (false, flipper, 0.5), // 1/2*|-0⟩
             (false, 0, 0.0)
         ],
-        (0, 1) => [ // |01⟩
-            (false, 0, 0.5), // 0.5*|01⟩
-            (true, flipper, 0.5), // 1/2*|10⟩
+        (0, 1) => [ // |-0⟩
+            (false, 0, 0.5), // 0.5*|-0⟩
+            (true, flipper, 0.5), // 1/2*|0-⟩
             (false, 0, 0.0)
         ],
-        (2, 0) => [ // |20⟩
-            (false, 0, 0.166666666), // 1/6*|20⟩
-            (false, flipper, 0.33333333), // 1/3*|11⟩
-            (false, 2*flipper, 0.166666666) // 1/6*|02⟩
+        (2, 0) => [ // |+-⟩
+            (false, 0, 0.166666666), // 1/6*|+-⟩
+            (false, flipper, 0.33333333), // 1/3*|00⟩
+            (false, 2*flipper, 0.166666666) // 1/6*|-+⟩
         ],
-        (1, 1) => [ // |11⟩
-            (false, 0, 0.6666666), // 1/6*|11⟩
-            (true, flipper, 0.33333333), // 1/3*|20⟩
-            (false, flipper, 0.33333333) // 1/3*|02⟩
+        (1, 1) => [ // |00⟩
+            (false, 0, 0.6666666), // 1/6*|00⟩
+            (true, flipper, 0.33333333), // 1/3*|+-⟩
+            (false, flipper, 0.33333333) // 1/3*|-+⟩
         ],
-        (0, 2) => [ // |02⟩
-            (false, 0, 0.166666666), // 1/6*|02⟩
-            (true, flipper, 0.33333333), // 1/3*|11⟩
-            (true, 2*flipper, 0.166666666) // 1/6*|20⟩
+        (0, 2) => [ // |-+⟩
+            (false, 0, 0.166666666), // 1/6*|-+⟩
+            (true, flipper, 0.33333333), // 1/3*|00⟩
+            (true, 2*flipper, 0.166666666) // 1/6*|+-⟩
         ],
-        (2, 1) => [ // |21⟩
-            (false, 0, 0.5), // 1/2*|21⟩
-            (false, flipper, 0.5), // 1/2*|12⟩
+        (2, 1) => [ // |+0⟩
+            (false, 0, 0.5), // 1/2*|+0⟩
+            (false, flipper, 0.5), // 1/2*|0+⟩
             (false, 0, 0.0)
         ],
-        (1, 2) => [ // |12⟩
-            (false, 0, 0.5), // 1/2*|12⟩
-            (true, flipper, 0.5), // 1/2*|21⟩
+        (1, 2) => [ // |0+⟩
+            (false, 0, 0.5), // 1/2*|0+⟩
+            (true, flipper, 0.5), // 1/2*|+0⟩
             (false, 0, 0.0)
         ],
-        (2, 2) => [  // |22⟩
-            (false, 0, 1.0), // 1*|22⟩
+        (2, 2) => [  // |++⟩
+            (false, 0, 1.0), // 1*|++⟩
             (false, 0, 0.0),
             (false, 0, 0.0)
         ],

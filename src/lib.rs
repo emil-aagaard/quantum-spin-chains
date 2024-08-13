@@ -1,6 +1,6 @@
-//! This crate is created by Emil Aagaard in 2024 as a part their Master's thesis "Quantum Spin Chains: Haldane's Conjecture and Symmetry-Protected Topological Phases".
+//! This Rust crate was created by Emil Aagaard in 2024, as part of the Master's thesis "Quantum Spin Chains: Haldane's Conjecture and Symmetry-Protected Topological Phases."
 //! 
-//! The crate diagonalizes Hamiltonians on finite quantum spin chains with general S using power iteration. To decrease the dimensionality of the problem, it only considers the subspace of eigenvectors that
+//! It diagonalizes Hamiltonians on finite quantum spin chains with general S using power iteration. To decrease the dimensionality of the problem, it only considers the subspace of eigenvectors that
 //! - have real coefficients in the natural basis.
 //! - are eigenvectors of the total quantum spin operator in the z-direction.
 //! - are time-reversal invariant.
