@@ -1,9 +1,10 @@
-cff-version: 0.1.0
+cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
   - family-names: Aagaard
     given-names: Emil
     orcid: https://orcid.org/0009-0005-7515-4551
-title: "Quantum spin chains"
+title: "Quantum Spin Chains"
 version: 0.1.0
 date-released: 2024-08-15
+url: "https://github.com/emil-aagaard/quantum-spin-chains"

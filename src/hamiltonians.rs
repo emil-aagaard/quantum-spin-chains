@@ -1,7 +1,7 @@
 use crate::states::State;
 use crate::model::Model;
 
-pub struct Heisenberg {
+pub struct AFH {
     pub s: f32,
     one_minus_s: f32,
 }
@@ -26,12 +26,12 @@ pub struct Hamiltonian<T> {
     pub parameters: T,
 }
 
-impl Hamiltonian<Heisenberg> {
+impl Hamiltonian<AFH> {
     pub fn new(s: f32) -> Self {
         let one_minus_s = 1.0 - s;
 
         Self {
-            parameters: Heisenberg {s, one_minus_s},
+            parameters: AFH {s, one_minus_s},
         }
     }
 }
@@ -46,7 +46,7 @@ impl Hamiltonian<AKLT> {
     }
 }
 
-impl Implemented for Hamiltonian<Heisenberg> {
+impl Implemented for Hamiltonian<AFH> {
     fn apply(
         &self,
         input_state: &State,
